@@ -1,9 +1,9 @@
 
 const nodemailer = require('nodemailer')
 require('dotenv').config()
-const {generarToken} = require('../config/token.config')
 
-function send_email(email, mgs) {
+
+function send_email(email, mgs, Template) {
 
     try {
         console.log(process.env.USER)
@@ -20,16 +20,11 @@ function send_email(email, mgs) {
             }
         )
 
-        const token = generarToken({
-            email
-        },'1h')
-        const urlconfirm = `http://localhost:4000/api/confirm-user/${token}`
-
         const mailOptions = {
-            from: 'desarrollocarlosydelais@gmail.com',
+            from: process.env.USEREMAIL,
             to: email,
             subject: mgs,
-            html: `<a href=${urlconfirm}>Confirmar</a>`
+            html: Template
         };
 
         transporter.sendMail(mailOptions, function (error, info) {
